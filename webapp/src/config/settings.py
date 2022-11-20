@@ -36,14 +36,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'users.apps.UsersConfig',
-    'manager.apps.ManagerConfig',
-
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
     'drf_yasg',
     'django_filters',
+    'django_celery_beat',
+
+    'users.apps.UsersConfig',
+    'manager.apps.ManagerConfig',
 
 ]
 
@@ -148,3 +149,5 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
 }
+
+CELERY_BROKER_URL = 'redis://redis:6379'

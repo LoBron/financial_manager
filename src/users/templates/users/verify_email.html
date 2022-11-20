@@ -1,0 +1,13 @@
+{% load i18n %}{% autoescape off %}
+Вы получили это сообщение потому что зарегистрировались на сервисе {{ site_name }}
+
+Пожалуйста перейдите по следующей ссылке и закончите регистрацию:
+{% block reset_link %}
+{{ protocol }}://{{ domain }}{% url 'verify_email' uidb64=uid token=token %}
+{% endblock %}
+
+{% translate "Thanks for using our service!" %}
+
+{% blocktranslate %}The {{ site_name }} team{% endblocktranslate %}
+
+{% endautoescape %}

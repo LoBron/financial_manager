@@ -7,7 +7,7 @@ from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .utils import TransactionFilter
+from .utils import TransactionFilter, check_balance, get_user_statistics
 from .serializers import *
 from . import tasks
 
@@ -15,24 +15,9 @@ from . import tasks
 class ProfileAPIView(APIView):
     def get(self, request):
         serializer = UserSerializer(request.user)
-
-        income = Decimal('0')
-        expenses = Decimal('0')
-        transactions = Transaction.objects.filter(
-            category__user=request.user.pk
-        ).select_related('category')
-        for transaction in transactions:
-            if transaction.category.is_income:
-                income += transaction.amount
-            else:
-                expenses += transaction.amount
-
         return Response({
             'user': serializer.data,
-            'balance': {
-                'income': income,
-                'expenses': expenses,
-            }
+            'balance': check_balance(request.user.pk),
         })
 
 

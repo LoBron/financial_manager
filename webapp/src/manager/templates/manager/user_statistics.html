@@ -1,0 +1,15 @@
+Ваши данные:
+    имя пользователя - {{user.username}}
+    почта - {{user.email}}
+
+Ваш баланс:
+    доходы - {{balance.income}}
+    расходы - {{balance.expenses}}
+
+Данные об операциях:
+    {% for category in statistics %}
+    {{category.name}}:
+        {% for transaction in category.transactions %}
+        сумма - {{transaction.amount}} / дата - {{transaction.date_create}} / время - {{transaction.time_create}}
+        {% endfor %}
+    {% endfor %}

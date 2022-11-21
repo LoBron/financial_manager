@@ -95,6 +95,7 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': '1',
         'HOST': 'postgres',
+        # 'HOST': 'localhost',
         'PORT': '5432',
     }
 }
@@ -140,7 +141,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'loban-f@mail.ru'

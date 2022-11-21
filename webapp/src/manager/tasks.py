@@ -1,33 +1,33 @@
 import time
 
 from celery import shared_task
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 
 from config.celery import app
+from manager.models import *
+from .utils import check_balance, get_user_statistics
 from users.models import *
 
 
 @shared_task
-def send_email_with_statistics(user_email, use_https=False):
+def send_email_with_statistics(user_email):
     user = User.objects.get(email=user_email)
-    print(f'{user.username} - ты пидрила вонючий')
-    current_site = get_current_site(request)
+    get_user_statistics(user.pk)
+    check_balance(user.pk)
     context = {
-        'domain': current_site.domain,
-        'site_name': current_site.name,
+        'statistics': get_user_statistics(user.pk),
+        'balance': check_balance(user.pk),
         'user': user,
-        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-        'token': token_generator.make_token(user),
-        'protocol': 'https' if use_https else 'http',
     }
-    message = render_to_string('users/verify_email.html', context=context)
+    message = render_to_string('manager/user_statistics.html', context=context)
     email = EmailMessage('Verify Email', message, to=[user.email])
     email.send()
 
+
 @app.task
-def send_statistics_to_users_email():
-    print('-------------- НАЧИНАЮ СПАМ ----------------')
+def distribution_of_tasks_for_sending_statistics():
     query_set = User.objects.filter(email_verify=True)
-    print(len(query_set))
     for user in query_set:
         send_email_with_statistics.delay(user.email)
-

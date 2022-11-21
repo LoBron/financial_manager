@@ -58,9 +58,7 @@ class Transaction(models.Model):
     time_create = models.TimeField('Время', default=timezone.now().time())
     date_create = models.DateField('Дата', default=timezone.now().date())
 
-    previous_amount = models.DecimalField(
-        'Предыдущая сумма', max_digits=9, decimal_places=2, default=0
-    )
+
 
     # def save(self, *args, **kwargs):
     #     difference = self.amount - self.previous_amount

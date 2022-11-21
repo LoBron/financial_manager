@@ -14,15 +14,13 @@ from users.models import *
 @shared_task
 def send_email_with_statistics(user_email):
     user = User.objects.get(email=user_email)
-    get_user_statistics(user.pk)
-    check_balance(user.pk)
     context = {
         'statistics': get_user_statistics(user.pk),
         'balance': check_balance(user.pk),
         'user': user,
     }
     message = render_to_string('manager/user_statistics.html', context=context)
-    email = EmailMessage('Verify Email', message, to=[user.email])
+    email = EmailMessage('User statistics', message, to=[user.email])
     email.send()
 
 

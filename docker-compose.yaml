@@ -1,9 +1,17 @@
 version: "3.9"
 
 services:
-  redis:
-    image: redis
-    restart: always
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: "manager_db"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "1"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5555:5432"
 
   webapp:
     restart: always
@@ -11,9 +19,11 @@ services:
       context: ./webapp
     ports:
       - "8000:8000"
-#    command: [ "python3", "./src/manage.py", "runserver", "0.0.0.0:8000"]
-    volumes:
-      - ./db:/app/src/db
+    command: [ "python3", "./src/manage.py", "runserver", "0.0.0.0:8000" ]
+
+  redis:
+    image: redis
+    restart: always
 
   worker:
     restart: always
@@ -25,6 +35,4 @@ services:
     restart: always
     build:
       context: ./webapp
-    volumes:
-      - ./db:/app/src/db
     command: ['celery', '--workdir=./src', '-A', 'config', 'beat', '-l', 'INFO', '--scheduler', 'django_celery_beat.schedulers:DatabaseScheduler']

@@ -22,7 +22,7 @@ app.conf.beat_schedule = {
     # Executes every Monday morning at 7:30 a.m.
     'send-statistics-every-day-in-7-hour': {
         'task': 'manager.tasks.send_statistics_to_users_email',
-        'schedule': crontab(minute='*', hour='*')
+        'schedule': crontab(minute=0, hour=7)
     },
 # crontab(minute=0, hour=21)
     # 'sweet-sleepyhead': {

@@ -94,7 +94,7 @@ DATABASES = {
         'NAME': 'manager_db',
         'USER': 'postgres',
         'PASSWORD': '1',
-        'HOST': 'postgres',
+        'HOST': 'db',
         # 'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -123,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Minsk'
 
 USE_I18N = True
 
@@ -163,3 +163,4 @@ REST_FRAMEWORK = {
 }
 
 CELERY_BROKER_URL = 'redis://redis:6379'
+CELERY_TIMEZONE = 'Europe/Minsk'

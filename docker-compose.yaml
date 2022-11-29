@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
 
-  postgres:
+  db:
     image: postgres
     environment:
       POSTGRES_DB: "manager_db"
@@ -17,6 +17,8 @@ services:
     restart: always
     build:
       context: ./webapp
+    depends_on:
+      - "db"
     ports:
       - "8000:8000"
     command: [ "python3", "./src/manage.py", "runserver", "0.0.0.0:8000" ]
@@ -29,10 +31,14 @@ services:
     restart: always
     build:
       context: ./webapp
+    depends_on:
+      - "db"
     command: ['celery', '--workdir=./src', '-A', 'config', 'worker']
 
   celery-beats:
     restart: always
     build:
       context: ./webapp
+    depends_on:
+      - "db"
     command: ['celery', '--workdir=./src', '-A', 'config', 'beat', '-l', 'INFO', '--scheduler', 'django_celery_beat.schedulers:DatabaseScheduler']

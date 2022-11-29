@@ -1,0 +1,24 @@
+
+SELECT brand.title, COUNT(notebook.id) AS count
+FROM notebooks_notebook AS notebook
+JOIN notebooks_brand AS brand
+ON brand.id = notebook.brand_id
+GROUP BY brand.title
+ORDER BY count desc;
+
+
+SELECT
+    CASE WHEN MOD(width::numeric, 5) > 0 THEN TRUNC(width::numeric/5)*5+5 ELSE width END AS width,
+    CASE WHEN MOD(depth::numeric, 5) > 0 THEN TRUNC(depth::numeric/5)*5+5 ELSE depth END AS depth,
+    CASE WHEN MOD(height::numeric, 5) > 0 THEN TRUNC(height::numeric/5)*5+5 ELSE height END AS height,
+    COUNT(id) AS count
+FROM notebooks_notebook
+GROUP BY 1, 2, 3
+ORDER BY 1, 2, 3;
+
+
+
+
+
+
+

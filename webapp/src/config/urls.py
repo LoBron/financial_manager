@@ -3,7 +3,7 @@ from django.urls import path, include, re_path
 from rest_framework.routers import SimpleRouter, DefaultRouter
 from .yasg import urlpatterns as doc_urls
 
-from manager.views import *
+from manager.viewsets import *
 from users.views import TokenCreateView
 from users.viewsets import UserViewSet
 
